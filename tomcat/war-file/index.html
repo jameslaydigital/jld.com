@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tomcat - simplest path to hello world</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/arta.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body>
+        <h1 class="logo">James Lay Digital</h1>
+        <div class="color-divider">
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+        </div>
+        <br />
+        <br />
+        <div class="container">
+            <h1>Tomcat - simplest .war deployment.</h1>
+            <br />
+            <br />
+            <div>
+                Step-by-step walkthrough to hello world with practically no breath wasted on explanation.
+            </div>
+            <div>
+                **Please first read <a href="/tomcat/get-started/">how to get started here.</a>
+            </div>
+            <hr />
+            <br />
+
+            <p>
+                <h3>Step 1: Navigate into the project directory:</h3>
+                <pre>
+                    <code class="bash">
+$&gt; cd /var/lib/tomcat7/webapps/ROOT/;
+                    </code>
+                </pre>
+            </p>
+
+            <p>
+                <h3>Step 2: Jar everything into a war file:</h3>
+                <pre>
+                    <code class="bash">
+$&gt; jar -cvf ROOT.war *;
+      #notice how similar "jar" is to "tar".
+                    </code>
+                </pre>
+            </p>
+
+            <p>
+                <h3>Step 3: Move the ROOT folder to your home directory. </h3>
+                <pre><code class="bash">$&gt; mv -v /var/lib/tomcat7/webapps/ROOT ~;</code></pre>
+            </p>
+
+            <p>
+                <h3>Step 4: replace the ROOT folder with the WAR file. </h3>
+                <pre>
+                    <code class="bash">
+$&gt; mv ROOT.war /var/lib/tomcat7/webapps/
+$&gt; rm -rfv /var/lib/tomcat7/webapps/ROOT
+    # !! always check for typos when using rm -rf. XD
+                    </code>
+                </pre>
+            </p>
+            <div>
+                <h3>Nice things to know</h3>
+                <ul>
+                    <li>A .war file is essentially a zipped folder, <br />
+                        It can be unzipped with the unzip utility.
+                    </li>
+                    <li>To deploy a .war file, put it in the "/var/lib/tomcat7/webapps" folder.<br />
+                        A .war file is equivalent to a project directory, such
+                        as the already existing "ROOT".<br />
+                        You could jar the ROOT folder into ROOT.war, and leave
+                        it in the same location, and it will work the same.
+                    </li>
+                    <li>Here's the expected file hierarchy: </li>
+                </ul>
+                <pre>
+    └── ROOT <i>(*This project is named "ROOT" but could be anything else)</i>
+        ├── META-INF
+        │   └── context.xml
+        └── WEB-INF
+            ├── classes
+            │   └── **.class servlets here**
+            ├── lib
+            │   └── **.jar libs here for project**
+            └── web.xml
+
+        <!-- ├── index.html -->
+    <!-- 5 directories, 6 files -->
+                </pre>
+                <div><i>*If you want to change the name of the project, make sure you update the server config file.</i></div>
+            </div>
+            <a class="back" href="/tomcat/get-started/">back</a>
+            <a class="next" href="/tomcat/ant/">next</a>
+            <br />
+            <br />
+            <br />
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1510510262520054";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
+            <div class="fb-comments"
+                data-href="http://jameslaydigital.com/tomcat/get-started/"
+                data-numposts="15"
+                data-colorscheme="dark"
+                data-width="100%"></div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+<html>

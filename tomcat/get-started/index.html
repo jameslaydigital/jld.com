@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tomcat - simplest path to hello world</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/arta.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body>
+        <h1 class="logo">James Lay Digital</h1>
+        <div class="color-divider">
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+        </div>
+        <br />
+        <br />
+        <div class="container">
+            <h1>Tomcat - simplest path to hello world</h1>
+            <br />
+            <br />
+            <div>
+                Step-by-step walkthrough to hello world with practically no breath wasted on explanation.
+            </div>
+            <hr />
+            <br />
+            <br />
+            <div>
+                <p>
+                    <h3>Step 1: install</h3>
+                    <pre><code class="bash">sudo apt-get install tomcat7</code></pre>
+                </p>
+                <br />
+                <p>
+                    <h3>Step 2: create structure</h3>
+                    <pre>
+                        <code class="bash">
+$&gt; cd /var/lib/tomcat7/webapps/ROOT
+$&gt; mkdir WEB-INF
+$&gt; mkdir WEB-INF/classes
+$&gt; mkdir WEB-INF/lib
+$&gt; touch WEB-INF/web.xml
+                        </code>
+                    </pre>
+                </p>
+                <p>
+                    <h3>Step 3: modify WEB-INF/web.xml</h3>
+                    <pre>
+                        <code class="xml">
+&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd"&gt;
+
+&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5"&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;Hello&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+&lt;/web-app&gt;
+                        </code>
+                    </pre>
+                </p>
+                <p>
+                    <h3>Step 4: create the hello servlet</h3>
+                    <pre>
+                        <code class="java">
+// This file goes here: /var/lib/tomcat7/webapps/ROOT/WEB-INF/classes/Hello.java
+//
+// Import required java libraries
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+// Extend HttpServlet class
+public class Hello extends HttpServlet {
+ 
+  private String message;
+
+  public void init() throws ServletException
+  {
+      // Do required initialization
+      message = "Hello World";
+  }
+
+  public void doGet(HttpServletRequest request,
+                    HttpServletResponse response)
+            throws ServletException, IOException
+  {
+      // Set response content type
+      response.setContentType("text/plain");
+
+      // Actual logic goes here.
+      PrintWriter out = response.getWriter();
+      out.println("&lt;h1&gt;" + message + "&lt;/h1&gt;");
+  }
+  
+  public void destroy()
+  {
+      // do nothing.
+  }
+}
+                        </code>
+                    </pre>
+                </p>
+                <p>
+                    <h3>Step 5: compile the Hello servlet </h3>
+                    <pre>
+                        <code class="bash">
+$&gt; cd /var/lib/tomcat7/webapps/ROOT/WEB-INF/classes;
+$&gt; javac -cp /usr/share/tomcat7/lib/servlet-api.jar Hello.java
+                        </code>
+                    </pre>
+                </p>
+                <p>
+                    <h3>Step 6: restart tomcat</h3>
+                    <pre>
+                        <code class="bash">
+$&gt; sudo service tomcat7 restart;
+                        </code>
+                    </pre>
+                </p>
+                <p>
+                    <h3>Step 7: Visit your website</h3>
+                    <pre>
+                        <code class="bash">
+$&gt; curl http://"your hostname":8080/
+    # should give you the "It Works" page.
+$&gt; curl http://"your hostname":8080/hello
+    # should give you the hello world plaintext
+                        </code>
+                    </pre>
+                </p>
+                <p>
+                    <pre>
+ROOT/
+| META-INF/
+| WEB-INF/
+| | classes/
+| | | Hello.class
+| | | Hello.java
+| | lib/
+| | web.xml
+| index.html
+                    </pre>
+                </p>
+                <a class="back" href="..">back</a>
+                <a class="next" href="/tomcat/war-file/">next</a>
+                <br />
+                <br />
+                <br />
+            </div>
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1510510262520054";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
+            <div class="fb-comments"
+                data-href="http://jameslaydigital.com/tomcat/get-started/"
+                data-numposts="15"
+                data-colorscheme="dark"
+                data-width="100%"></div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+<html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tomcat - simplest path to hello world</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/arta.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body>
+        <h1 class="logo">James Lay Digital</h1>
+        <div class="color-divider">
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+        </div>
+        <br />
+        <br />
+        <div class="container">
+            <h1>Tomcat - simplest hello world ant configuration.</h1>
+            <br />
+            <br />
+            <div>
+                Step-by-step walkthrough to hello world with practically no breath wasted on explanation.
+            </div>
+            <div>
+                **Please first read <a href="/tomcat/get-started/">how to get started here.</a>
+            </div>
+            <br />
+            <hr />
+            <div>
+                <h2> Ant build tool </h2>
+                <hr />
+                <br />
+
+                <p>
+                    <h3>Step 1: install ant</h3>
+                    <pre><code class="bash">$&gt; sudo apt-get install ant;</code></pre>
+                </p>
+
+                <br />
+
+                <p>
+                    <h3>Step 2: create your development environment</h3>
+                    <div>
+                        Make sure you've followed step 3 from 
+                        <a href="/tomcat/war-file/">the previous article.</a>
+                        Then, do this:
+                    </div>
+                    <pre>
+                        <code class="bash">
+#We've just copied a working project directory from our deployment
+#destination to our home folder, where we will develop our app.
+
+$&gt; cd ~/ROOT;
+$&gt; mkdir src;    #the source code for our servlets will go here now.
+$&gt; mv -v WEB-INF/classes/*.jar src;  #relocate our existing Hello.java.
+$&gt; mv -v WEB-INF/web.xml .;          #relocate our web.xml file.
+$&gt; rm -rfv WEB-INF/                  #we no longer need this.
+                        </code>
+                    </pre>
+                </p>
+
+                <p>
+                    <h3>Step 3: create the build.xml file.</h3>
+                    <pre>
+                        <code class="xml">
+$&gt; cd ~/ROOT;
+$&gt; nano build.xml;
+                        </code>
+build.xml:
+                        <code class="xml">
+&lt;?xml version="1.0"?&gt;
+&lt;project default="deploy"&gt;
+
+    &lt;path id="classpath"&gt;
+        &lt;fileset dir="/usr/share/tomcat7/lib/" includes="*.jar"/&gt;
+    &lt;/path&gt;
+
+    &lt;target name="clean"&gt;
+        &lt;delete dir="build" /&gt;
+        &lt;delete dir="deploy" /&gt;
+    &lt;/target&gt;
+
+    &lt;target name="compile" depends="clean"&gt;
+        &lt;mkdir dir="build/WEB-INF/classes" /&gt;
+        &lt;javac destdir="build/WEB-INF/classes"&gt;
+            &lt;src path="src"/&gt;
+            &lt;classpath refid="classpath"/&gt;
+        &lt;/javac&gt;
+    &lt;/target&gt;
+
+    &lt;target name="deploy" depends="compile"&gt;
+        &lt;copy file="web.xml" tofile="build/WEB-INF/web.xml" /&gt;
+        &lt;mkdir dir="deploy" /&gt;
+        &lt;jar destfile="deploy/ROOT.war" basedir="build"&gt;&lt;/jar&gt;
+    &lt;/target&gt;
+
+&lt;/project&gt;
+                        </code>
+                    </pre>
+                </p>
+
+                <p>
+                    <h3>Step 4: create a deployment script</h3>
+                    <pre>
+                        <code class="bash">
+$&gt; cd ~/ROOT;
+$&gt; nano deploy.sh;
+                        </code>
+deploy.sh
+                        <code class="bash">
+#!/bin/bash
+
+service tomcat7 stop
+rm -rfv /var/lib/tomcat7/webapps/ROOT*  #remove outdated version
+cp -v deploy/ROOT.war /var/lib/tomcat7/webapps/ #add new version
+service tomcat7 start
+                        </code>
+save and close, then type:
+                        <code class="bash">
+$&gt; chmod +x deploy.sh; #script needs execute permissions
+                        </code>
+                    </pre>
+                </p>
+
+                <p>
+                    <h3>Step 5: Profit</h3>
+                    <pre>
+                        <code class="bash">
+$&gt; ant &amp;&amp; ./deploy.sh; #run this everytime you make changes to the source.
+                        </code>
+                    </pre>
+                </p>
+
+            </div>
+            <div>
+                <h4>Sources:</h4>
+                <ul>
+                    <li><a href="http://stackoverflow.com/questions/3502964/ant-copy-files">stackoverflow ant question</a></li>
+                    <li><a href="http://www.tutorialspoint.com/ant/">tutorialspoint.com ant tutorial</a></li>
+                    <li><a href="https://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html">ant official tutorial</a></li>
+                    <li><a href="http://tomcat.apache.org/tomcat-7.0-doc/">tomcat official documentation</a></li>
+                </ul>
+            </div>
+            <br />
+            <a class="back" href="/tomcat/war-file/">back</a>
+            <a class="next" href="/tomcat/add-servlet/">next</a>
+            <br />
+            <br />
+            <br />
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1510510262520054";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
+            <div class="fb-comments"
+                data-href="http://jameslaydigital.com/tomcat/get-started/"
+                data-numposts="15"
+                data-colorscheme="dark"
+                data-width="100%"></div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+<html>

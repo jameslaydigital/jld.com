@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tomcat - simplest path to hello world</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/arta.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body>
+        <h1 class="logo">James Lay Digital</h1>
+        <div class="color-divider">
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+            <div class="color-box"></div>
+        </div>
+        <br />
+        <br />
+        <div class="container">
+            <h1>Tomcat - add servlet via dev environment.</h1>
+            <br />
+            <br />
+            <div>
+                Step-by-step walkthrough to hello world with practically no breath wasted on explanation.
+            </div>
+            <div>
+                **Please first read <a href="/tomcat/get-started/">how to get started here.</a>
+            </div>
+            <hr />
+            <br />
+            <br />
+            <div>
+
+                <p>
+                    <h3>Step 1: Create a new servlet.</h3>
+                    <div> Create a servlet in "~/ROOT/src" called "NewServlet.java":</div>
+                    <pre>
+                        <code class="java">
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class NewServlet extends HttpServlet {
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+      // Set response content type
+      response.setContentType("text/plain");
+
+      // Actual logic goes here.
+      PrintWriter out = response.getWriter();
+      out.println("This is the NEW servlet");
+  }
+}
+                        </code>
+                    </pre>
+                </p>
+
+                <p>
+                    <h3>Step 2: modify the web.xml file</h3>
+                    <div>Add this to ~/ROOT/web.xml just above &lt;/web-app&gt;:</div>
+                    <pre>
+                        <code class="xml">
+&lt;servlet&gt;
+    &lt;servlet-name&gt;NewServlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;NewServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;NewServlet&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/NewServlet&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+
+                        </code>
+                    </pre>
+                </p>
+
+                <p>
+                    <h3>Step 3: profit</h3>
+                    <pre>
+                        <code class="bash">
+$&gt; curl http://your-hostname.com:8080/hello
+    #should give you the old hello world page.
+$&gt; curl http://your-hostname.com:8080/NewServlet
+    #should give you the "this is the NEW servlet" message.
+                        </code>
+                    </pre>
+                </p>
+            </div>
+            <div>
+                <h4>Sources:</h4>
+                <ul>
+                    <li><a href="http://stackoverflow.com/questions/3502964/ant-copy-files">stackoverflow ant question</a></li>
+                    <li><a href="http://www.tutorialspoint.com/ant/">tutorialspoint.com ant tutorial</a></li>
+                    <li><a href="https://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html">ant official tutorial</a></li>
+                    <li><a href="http://tomcat.apache.org/tomcat-7.0-doc/">tomcat official documentation</a></li>
+                </ul>
+            </div>
+            <br />
+            <a class="back" href="/tomcat/ant/">back</a>
+            <a class="next" href="/tomcat/">ToC</a>
+            <br />
+            <br />
+            <br />
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1510510262520054";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
+            <div class="fb-comments"
+                data-href="http://jameslaydigital.com/tomcat/get-started/"
+                data-numposts="15"
+                data-colorscheme="dark"
+                data-width="100%"></div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+<html>
